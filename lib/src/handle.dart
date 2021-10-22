@@ -132,7 +132,7 @@ class _HandleState extends State<Handle> {
   @override
   Widget build(BuildContext context) {
     if (!widget.enabled) return widget.child;
-    
+
     _list = ImplicitlyAnimatedReorderableList.of(context);
     assert(_list != null,
         'No ancestor ImplicitlyAnimatedReorderableList was found in the hierarchy!');

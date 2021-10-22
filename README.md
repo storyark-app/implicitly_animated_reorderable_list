@@ -1,5 +1,8 @@
 # Implicitly Animated Reorderable List
 
+[![pub package](https://img.shields.io/pub/v/implicitly_animated_reorderable_list.svg)](https://pub.dartlang.org/packages/implicitly_animated_reorderable_list)
+[![GitHub Stars](https://img.shields.io/github/stars/bxqm/implicitly_animated_reorderable_list.svg?logo=github)](https://github.com/bxqm/implicitly_animated_reorderable_list)
+
 A Flutter `ListView` that implicitly calculates the changes between two lists using the `MyersDiff` algorithm and animates between them for you. The `ImplicitlyAnimatedReorderableList` adds reordering support to its items with fully custom animations.
 
 <p style="text-align:center">
@@ -13,7 +16,7 @@ Click [here](https://github.com/bxqm/implicitly_animated_reorderable_list/blob/m
 Add it to your `pubspec.yaml` file:
 ```yaml
 dependencies:
-  implicitly_animated_reorderable_list: ^0.4.1
+  implicitly_animated_reorderable_list: ^0.4.2
 ```
 Install packages from the command line
 ```
