@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:implicitly_animated_reorderable_list/src/custom_sliver_animated_list.dart';
@@ -151,7 +150,7 @@ class ImplicitlyAnimatedReorderableList<E extends Object>
   const ImplicitlyAnimatedReorderableList({
     Key? key,
     required List<E> items,
-    required AnimatedItemBuilder<Reorderable, E> itemBuilder,
+    required ItemBuilder<Reorderable, E> itemBuilder,
     required ItemDiffUtil<E> areItemsTheSame,
     RemovedItemBuilder<Reorderable, E>? removeItemBuilder,
     UpdatedItemBuilder<Reorderable, E>? updateItemBuilder,
@@ -207,21 +206,25 @@ class ImplicitlyAnimatedReorderableListState<E extends Object>
         ImplicitlyAnimatedReorderableList<E>, E> {
   // The key of the custom scroll view.
   final GlobalKey _listKey = GlobalKey(debugLabel: 'list_key');
+
   // The key of the draggedItem.
   final GlobalKey _dragKey = GlobalKey(debugLabel: 'drag_key');
 
   // The key of the header.
   final GlobalKey _headerKey = GlobalKey(debugLabel: 'header_key');
+
   bool get hasHeader => widget.header != null;
   double _headerHeight = 0.0;
 
   // The key of the footer.
   final GlobalKey _footerKey = GlobalKey(debugLabel: 'footer_key');
+
   bool get hasFooter => widget.footer != null;
   double _footerHeight = 0.0;
 
   Timer? _scrollAdjuster;
   ScrollController? _controller;
+
   ScrollController? get scrollController => _controller;
 
   _Item? dragItem;
@@ -231,9 +234,13 @@ class ImplicitlyAnimatedReorderableListState<E extends Object>
   bool get isVertical => widget.scrollDirection != Axis.horizontal;
 
   double _listSize = 0.0;
+
   double get scrollOffset => _canScroll ? _controller!.offset : 0.0;
+
   double get _maxScrollOffset => _controller?.position.maxScrollExtent ?? 0.0;
+
   double get _scrollDelta => scrollOffset - _dragStartScrollOffset;
+
   bool get _canScroll => _maxScrollOffset > 0.0;
 
   bool get _up => _dragDelta.isNegative;
@@ -241,27 +248,39 @@ class ImplicitlyAnimatedReorderableListState<E extends Object>
   // Whether there is an item in the list that is currently being
   // dragged/reordered.
   bool _inDrag = false;
+
   bool get inDrag => _inDrag;
+
   // Whether there is an item in the list that is currently being
   // reordered or moving towards its destination position.
   bool _inReorder = false;
+
   bool get inReorder => _inReorder;
 
   double _dragStartOffset = 0.0;
   double _dragStartScrollOffset = 0.0;
+
   Key? get dragKey => dragItem?.key;
+
   int? get _dragIndex => dragItem?.index;
+
   double get _dragStart => dragItem!.start + _dragDelta;
+
   double get _dragEnd => dragItem!.end + _dragDelta;
+
   // double get _dragCenter => dragItem.middle + _dragDelta;
   double get _dragSize => isVertical ? dragItem!.height : dragItem!.width;
 
   final ValueNotifier<double> _dragDeltaNotifier = ValueNotifier(0.0);
+
   double get _dragDelta => _dragDeltaNotifier.value;
+
   set _dragDelta(double value) => _dragDeltaNotifier.value = value;
 
   final ValueNotifier<double> _pointerDeltaNotifier = ValueNotifier(0.0);
+
   double get _pointerDelta => _pointerDeltaNotifier.value;
+
   set _pointerDelta(double value) => _pointerDeltaNotifier.value = value;
 
   final Map<Key?, GlobalKey> _keys = {};
@@ -842,6 +861,7 @@ class _Item extends Rect implements Comparable<_Item> {
   final int? index;
   final Offset offset;
   final bool _isVertical;
+
   _Item(
     this.key,
     this.box,
@@ -857,7 +877,9 @@ class _Item extends Rect implements Comparable<_Item> {
         );
 
   double get start => _isVertical ? top : left;
+
   double get end => _isVertical ? bottom : right;
+
   double get middle => _isVertical ? center.dy : center.dx;
 
   double? distance;
