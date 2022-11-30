@@ -119,6 +119,9 @@ class ImplicitlyAnimatedList<E extends Object> extends StatelessWidget {
   /// The amount of space by which to inset the children.
   final EdgeInsetsGeometry? padding;
 
+  /// {@macro flutter.widgets.SliverChildBuilderDelegate.findChildIndexCallback}
+  final ChildIndexGetter? findChildIndexCallback;
+
   /// Creates a Flutter ListView that implicitly animates between the changes
   /// of two lists.
   const ImplicitlyAnimatedList({
@@ -139,6 +142,7 @@ class ImplicitlyAnimatedList<E extends Object> extends StatelessWidget {
     this.physics,
     this.shrinkWrap = false,
     this.padding,
+    this.findChildIndexCallback,
   }) : super(key: key);
 
   @override
@@ -163,6 +167,7 @@ class ImplicitlyAnimatedList<E extends Object> extends StatelessWidget {
             removeDuration: removeDuration,
             updateDuration: updateDuration,
             spawnIsolate: spawnIsolate,
+            findChildIndexCallback: findChildIndexCallback,
           ),
         ),
       ],
@@ -173,6 +178,9 @@ class ImplicitlyAnimatedList<E extends Object> extends StatelessWidget {
 /// A Flutter Sliver that implicitly animates between the changes of two lists.
 class SliverImplicitlyAnimatedList<E extends Object>
     extends ImplicitlyAnimatedListBase<Widget, E> {
+  /// {@macro flutter.widgets.SliverChildBuilderDelegate.findChildIndexCallback}
+  final ChildIndexGetter? findChildIndexCallback;
+
   /// Creates a Flutter Sliver that implicitly animates between the changes of two lists.
   ///
   /// {@template implicitly_animated_reorderable_list.constructor}
@@ -205,19 +213,20 @@ class SliverImplicitlyAnimatedList<E extends Object>
     Duration insertDuration = const Duration(milliseconds: 500),
     Duration removeDuration = const Duration(milliseconds: 500),
     Duration updateDuration = const Duration(milliseconds: 500),
+    this.findChildIndexCallback,
     bool? spawnIsolate,
   }) : super(
-          key: key,
-          items: items,
-          itemBuilder: itemBuilder,
-          areItemsTheSame: areItemsTheSame,
-          removeItemBuilder: removeItemBuilder,
-          updateItemBuilder: updateItemBuilder,
-          insertDuration: insertDuration,
-          removeDuration: removeDuration,
-          updateDuration: updateDuration,
-          spawnIsolate: spawnIsolate,
-        );
+    key: key,
+    items: items,
+    itemBuilder: itemBuilder,
+    areItemsTheSame: areItemsTheSame,
+    removeItemBuilder: removeItemBuilder,
+    updateItemBuilder: updateItemBuilder,
+    insertDuration: insertDuration,
+    removeDuration: removeDuration,
+    updateDuration: updateDuration,
+    spawnIsolate: spawnIsolate,
+  );
 
   @override
   _SliverImplicitlyAnimatedListState<E> createState() =>
@@ -226,12 +235,14 @@ class SliverImplicitlyAnimatedList<E extends Object>
 
 class _SliverImplicitlyAnimatedListState<E extends Object>
     extends ImplicitlyAnimatedListBaseState<Widget,
-        SliverImplicitlyAnimatedList<E>, E> {
+        SliverImplicitlyAnimatedList<E>,
+        E> {
   @override
   Widget build(BuildContext context) {
     return CustomSliverAnimatedList(
       key: animatedListKey,
       initialItemCount: newList.length,
+      findChildIndexCallback: widget.findChildIndexCallback,
       itemBuilder: (context, index, animation) {
         final E? item = data.getOrNull(index) ??
             newList.getOrNull(index) ??
