@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -58,12 +57,16 @@ class Handle extends StatefulWidget {
 
 class _HandleState extends State<Handle> {
   ScrollableState? _parent;
+
   // A custom handler used to cancel the pending onDragStart callbacks.
   Handler? _handler;
+
   // The parent Reorderable item.
   ReorderableState? _reorderable;
+
   // The parent list.
   ImplicitlyAnimatedReorderableListState? _list;
+
   // Whether the ImplicitlyAnimatedReorderableList has a
   // scrollDirection of Axis.vertical.
   bool get _isVertical => _list?.isVertical ?? true;
@@ -72,11 +75,13 @@ class _HandleState extends State<Handle> {
   late double _downOffset;
   double? _startOffset;
   double? _currentOffset;
+
   double get _delta => (_currentOffset ?? 0) - (_startOffset ?? 0);
 
   // Use flags from the list as this State object is being
   // recreated between dragged and normal state.
   bool get _inDrag => _list!.inDrag;
+
   bool get _inReorder => _list!.inReorder;
 
   // The pixel offset of a possible parent Scrollable

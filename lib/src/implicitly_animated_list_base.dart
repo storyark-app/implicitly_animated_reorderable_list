@@ -1,15 +1,13 @@
 import 'dart:async';
 
 import 'package:async/async.dart';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:implicitly_animated_reorderable_list/src/custom_sliver_animated_list.dart';
-import 'package:meta/meta.dart';
 
 import 'src.dart';
 
-typedef AnimatedItemBuilder<W extends Widget, E> = W Function(
+typedef ItemBuilder<W extends Widget, E> = W Function(
     BuildContext context, Animation<double> animation, E item, int i);
 
 typedef RemovedItemBuilder<W extends Widget, E> = W Function(
@@ -23,7 +21,7 @@ abstract class ImplicitlyAnimatedListBase<W extends Widget, E extends Object>
   /// Called, as needed, to build list item widgets.
   ///
   /// List items are only built when they're scrolled into view.
-  final AnimatedItemBuilder<W, E> itemBuilder;
+  final ItemBuilder<W, E> itemBuilder;
 
   /// An optional builder when an item was removed from the list.
   ///
@@ -63,6 +61,7 @@ abstract class ImplicitlyAnimatedListBase<W extends Widget, E extends Object>
   /// use its own metrics to decide, whether a new isolate has to be spawned or not for
   /// optimal performance.
   final bool? spawnIsolate;
+
   const ImplicitlyAnimatedListBase({
     Key? key,
     required this.items,
@@ -106,12 +105,16 @@ abstract class ImplicitlyAnimatedListBaseState<W extends Widget,
 
   // The currently active items.
   late List<E> _data = List<E>.from(widget.items);
+
   List<E> get data => _data;
+
   // The items that have newly come in that
   // will get diffed into the dataset.
   late List<E> _newItems = List<E>.from(widget.items);
+
   // The previous dataSet.
   late List<E> _oldItems = List<E>.from(data);
+
   //
   Completer<int>? _mutex;
 
@@ -131,10 +134,12 @@ abstract class ImplicitlyAnimatedListBaseState<W extends Widget,
 
   @nonVirtual
   @protected
-  AnimatedItemBuilder<W, E> get itemBuilder => widget.itemBuilder;
+  ItemBuilder<W, E> get itemBuilder => widget.itemBuilder;
+
   @nonVirtual
   @protected
   RemovedItemBuilder<W, E>? get removeItemBuilder => widget.removeItemBuilder;
+
   @nonVirtual
   @protected
   UpdatedItemBuilder<W, E>? get updateItemBuilder => widget.updateItemBuilder;

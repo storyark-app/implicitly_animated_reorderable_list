@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 import 'src.dart';
@@ -72,7 +70,9 @@ class ReorderableState extends State<Reorderable>
   bool _isVertical = true;
 
   bool _inDrag = false;
+
   bool get inDrag => _inDrag;
+
   set inDrag(bool value) {
     if (value != inDrag) {
       _inDrag = value;
